@@ -1,0 +1,41 @@
+{% extends 'home_work_2/tasks.html' %}
+{% load humanize %}
+{% block task_new %}
+
+{% if list_task %}
+    <ul class="list-group">
+    {% for task in list_task %}
+        <li > <a class="list-group-item list-group-item-action" href="/tasks/{{task.number}}/detail/">{{task.number}} {{task.describe}} {{task.input}}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+
+{% if detail_task%}
+<div>{{ detail_task}}</div>
+<div>{{ detail_task.number | apnumber }}</div>
+{% else %}
+    <p>No tasks are available.</p>
+{% endif %}
+
+
+<h2>{{task_id}}</h2>
+<br />
+<form class="form-inline">
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="inputPassword2" class="sr-only">Password</label>
+        <input type="text" class="form-control" placeholder='{"12":12, 12:12, 1:"1", -1:"-1", 99:"99"}'
+            value='{"12":"12", "12":12, "1":"1", "-1":"-1", "99":"99"}' name="input_string_5">
+    </div>
+    <button type="submit" class="btn btn-success mb-2">Get</button>
+</form>
+{% if result_5 %}
+<div class="card text-white bg-info mb-3">
+    <div class="card-body">
+        <h5 class="card-title">dictionary: {{ input_string_5 }}</h5>
+        <p class="card-text">sort a dictionary by key {{ result_5 }}</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

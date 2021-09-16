@@ -1,0 +1,127 @@
+{% extends 'home_work_2/base.html' %}
+
+{% block task_new %}{% endblock %}
+
+{% block task_1 %}
+
+<br />
+
+<form class="form-inline">
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="inputPassword2" class="sr-only">Password</label>
+        <input type="text" class="form-control" placeholder="paste string" value = "EPAM Best company " name="input_string_1">
+    </div>
+    <button type="submit" class="btn btn-success mb-2">Get len string</button>
+
+</form>
+
+
+
+
+{% if result_1 %}
+<div class="card text-white bg-info mb-3">
+    <div class="card-body">
+        <h5 class="card-title">Input string: {{ input_string_1 }}</h5>
+        <p class="card-text">length of a string: {{ result_1 }}</p>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+
+{% block task_2 %}
+<br />
+<form class="form-inline">
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="inputPassword2" class="sr-only">Password</label>
+        <input type="text" class="form-control" placeholder="Oh, it is python" value="Oh, it is python" name="input_string_2">
+    </div>
+    <button type="submit" class="btn btn-success mb-2">Get</button>
+</form>
+{% if result_2 %}
+<div class="card text-white bg-info mb-3">
+    <div class="card-body">
+        <h5 class="card-title">Input string: {{ input_string_2 }}</h5>
+        <p class="card-text">character frequency: {{ result_2 }}</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block task_3 %}
+<br />
+<form class="form-inline">
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="inputPassword2" class="sr-only">Password</label>
+        <input type="text" class="form-control" placeholder="red white black red green black" value= "red white black red green black"  name="input_string_3">
+    </div>
+    <button type="submit" class="btn btn-success mb-2">Get</button>
+</form>
+{% if result_3 %}
+<div class="card text-white bg-info mb-3">
+    <div class="card-body">
+        <h5 class="card-title">comma separated sequence of words: {{ input_string_3 }}</h5>
+        <p class="card-text">unique words in sorted form {{ result_3 }}</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block task_33 %}
+<br />
+<form class="form-inline">
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="inputPassword2" class="sr-only">Password</label>
+        <input type="text" class="form-control" placeholder="60" value="60" name="input_string_33">
+    </div>
+    <button type="submit" class="btn btn-success mb-2">Get</button>
+</form>
+{% if result_33 %}
+<div class="card text-white bg-info mb-3">
+    <div class="card-body">
+        <h5 class="card-title">number: {{ input_string_33 }}</h5>
+        <p class="card-text">divisors {{ result_33 }}</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+
+{% block task_4 %}
+<br />
+<form class="form-inline">
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="inputPassword2" class="sr-only">Password</label>
+        <input type="text" class="form-control" placeholder='{"12":12, 12:12, 1:"1", -1:"-1", 99:"99"}' value='{"12":"12", "12":12, "1":"1", "-1":"-1", "99":"99"}' name="input_string_4">
+    </div>
+    <button type="submit" class="btn btn-success mb-2">Get</button>
+</form>
+{% if result_4 %}
+<div class="card text-white bg-info mb-3">
+    <div class="card-body">
+        <h5 class="card-title">dictionary: {{ input_string_4 }}</h5>
+        <p class="card-text">sort a dictionary by key {{ result_4 }}</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block task_5 %}
+<br />
+<form class="form-inline">
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="inputPassword2" class="sr-only">Password</label>
+        <input type="text" class="form-control" placeholder='{"12":12, 12:12, 1:"1", -1:"-1", 99:"99"}' value='{"12":"12", "12":12, "1":"1", "-1":"-1", "99":"99"}' name="input_string_5">
+    </div>
+    <button type="submit" class="btn btn-success mb-2">Get</button>
+</form>
+{% if result_5 %}
+<div class="card text-white bg-info mb-3">
+    <div class="card-body">
+        <h5 class="card-title">dictionary: {{ input_string_5 }}</h5>
+        <p class="card-text">sort a dictionary by key {{ result_5 }}</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
