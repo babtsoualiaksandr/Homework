@@ -1,0 +1,168 @@
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam
+╰─$ mkdir HomeWork3
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam
+╰─$ HomeWork3
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3
+╰─$ ls
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3
+╰─$ git init
+подсказка: Using 'master' as the name for the initial branch. This default branch name
+подсказка: is subject to change. To configure the initial branch name to use in all
+подсказка: of your new repositories, which will suppress this warning, call:
+подсказка:
+подсказка: 	git config --global init.defaultBranch <name>
+подсказка:
+подсказка: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+подсказка: 'development'. The just-created branch can be renamed via this command:
+подсказка:
+подсказка: 	git branch -m <name>
+Инициализирован пустой репозиторий Git в /Users/alexander/Documents/Python_Epam/HomeWork3/.git/
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹master›
+╰─$ git status
+На ветке master
+
+Еще нет коммитов
+
+нечего коммитить (создайте/скопируйте файлы, затем запустите «git add», чтобы отслеживать их)
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹master›
+╰─$ echo This is some text > myfile.txt
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹master*›
+╰─$ git add myfile.txt
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹master*›
+╰─$ git status
+На ветке master
+
+Еще нет коммитов
+
+Изменения, которые будут включены в коммит:
+  (используйте «git rm --cached <файл>…», чтобы убрать из индекса)
+	новый файл:    myfile.txt
+
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹master*›
+╰─$ git commit -m"fiat: Create a text file"
+[master (корневой коммит) ba2d6e9] fiat: Create a text file
+ 1 file changed, 1 insertion(+)
+ create mode 100644 myfile.txt
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹master›
+╰─$ git status
+На ветке master
+нечего коммитить, нет изменений в рабочем каталоге
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹master›
+╰─$ git remote add origin git@github.com:babtsoualiaksandr/home-work-3.git
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹master›
+╰─$ git push -u origin main
+error: src refspec main does not match any
+error: не удалось отправить некоторые ссылки в «github.com:babtsoualiaksandr/home-work-3.git»
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹master›
+╰─$ git push -u origin master                                                                                                             1 ↵
+Перечисление объектов: 3, готово.
+Подсчет объектов: 100% (3/3), готово.
+Запись объектов: 100% (3/3), 245 bytes | 245.00 KiB/s, готово.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+To github.com:babtsoualiaksandr/home-work-3.git
+ * [new branch]      master -> master
+Ветка «master» отслеживает внешнюю ветку «master» из «origin».
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹master›
+╰─$ git checkout --help
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹master›
+╰─$ git checkout -b develop
+Переключено на новую ветку «develop»
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹develop›
+╰─$ git checkout -b new_develop
+Переключено на новую ветку «new_develop»
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹new_develop›
+╰─$ nano myfile.txt
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹new_develop*›
+╰─$ nano myfile.txt
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹new_develop*›
+╰─$ git commit -m"fiat: Create new rows in file"
+На ветке new_develop
+Изменения, которые не в индексе для коммита:
+  (используйте «git add <файл>…», чтобы добавить файл в индекс)
+  (use "git restore <file>..." to discard changes in working directory)
+	изменено:      myfile.txt
+
+нет изменений добавленных для коммита
+(используйте «git add» и/или «git commit -a»)
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹new_develop*›
+╰─$ git add myfile.txt                                                                                                                    1 ↵
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹new_develop*›
+╰─$ git commit -m"fiat: Create new rows in file"
+[new_develop 7f2764b] fiat: Create new rows in file
+ 1 file changed, 1 insertion(+)
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹new_develop›
+╰─$ git push -u origin master
+Ветка «master» отслеживает внешнюю ветку «master» из «origin».
+Everything up-to-date
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹new_develop›
+╰─$ git push -u origin new_develop
+Перечисление объектов: 5, готово.
+Подсчет объектов: 100% (5/5), готово.
+Запись объектов: 100% (3/3), 288 bytes | 288.00 KiB/s, готово.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+remote:
+remote: Create a pull request for 'new_develop' on GitHub by visiting:
+remote:      https://github.com/babtsoualiaksandr/home-work-3/pull/new/new_develop
+remote:
+To github.com:babtsoualiaksandr/home-work-3.git
+ * [new branch]      new_develop -> new_develop
+Ветка «new_develop» отслеживает внешнюю ветку «new_develop» из «origin».
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹new_develop›
+╰─$ ls
+myfile.txt
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/HomeWork3 ‹new_develop›
+╰─$ ..
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam
+╰─$ ls
+EPAM-Python-Traning-2021-09 HomeWork3                   Homework
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam
+╰─$ Homework
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/Homework ‹master›
+╰─$ ..
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam
+╰─$ mkdir Homework_3_new
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam
+╰─$ git clone git@github.com:babtsoualiaksandr/home-work-3.git
+Клонирование в «home-work-3»…
+remote: Enumerating objects: 6, done.
+remote: Counting objects: 100% (6/6), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 6 (delta 0), reused 6 (delta 0), pack-reused 0
+Получение объектов: 100% (6/6), готово.
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam
+╰─$ ls
+EPAM-Python-Traning-2021-09 HomeWork3                   Homework                    Homework_3_new              home-work-3
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam
+╰─$ home-work-3
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/home-work-3 ‹master›
+╰─$ ls
+myfile.txt
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/home-work-3 ‹master›
+╰─$ git checkout develop
+error: pathspec 'develop' did not match any file(s) known to git
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/home-work-3 ‹master›
+╰─$ git checkout -b develop                                                                                                               1 ↵
+Переключено на новую ветку «develop»
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/home-work-3 ‹develop›
+╰─$ nano myfile.txt
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/home-work-3 ‹develop*›
+╰─$ git add myfile.txt
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/home-work-3 ‹develop*›
+╰─$ git commit -m"fiat: Create new new rows in file"
+[develop 3d40aed] fiat: Create new new rows in file
+ 1 file changed, 1 insertion(+)
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/home-work-3 ‹develop*›
+╰─$ git push -u origin develop
+Перечисление объектов: 5, готово.
+Подсчет объектов: 100% (5/5), готово.
+Запись объектов: 100% (3/3), 295 bytes | 295.00 KiB/s, готово.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+remote:
+remote: Create a pull request for 'develop' on GitHub by visiting:
+remote:      https://github.com/babtsoualiaksandr/home-work-3/pull/new/develop
+remote:
+To github.com:babtsoualiaksandr/home-work-3.git
+ * [new branch]      develop -> develop
+Ветка «develop» отслеживает внешнюю ветку «develop» из «origin».
+╭─alexander@MacBook-Air-2 ~/Documents/Python_Epam/home-work-3 ‹develop*›
+╰─$
