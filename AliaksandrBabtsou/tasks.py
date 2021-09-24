@@ -1,3 +1,4 @@
+from enum import Enum
 from collections import OrderedDict
 import string
 
@@ -10,6 +11,8 @@ __all__ = [
     'FlyingBird',
     'NonFlyingBird',
     'SuperBird',
+    'Sun',
+    'Money'
 
 ]
 
@@ -88,6 +91,7 @@ class Bird:
     def walk(self):
         return f'{self.name} bird can walk'
 
+
 class FlyingBird(Bird):
     def __init__(self, name, *args):
         if not any(args):
@@ -96,15 +100,21 @@ class FlyingBird(Bird):
             self.ration = args
         super().__init__(name)
 
-    def eat(self):    
+    def eat(self):
         return f'It eats mostly {self.ration if isinstance(self.ration,str) else ",".join(self.ration)}'
+
     def __str__(self) -> str:
         return f'{self.name} can walk and fly'
 
-class NonFlyingBird(FlyingBird):
+
+class NonFlyingBird(Bird):
     def __init__(self, name, *args):
-        super().__init__(name, *args)
-    
+        if not any(args):
+            self.ration = 'fish'
+        else:
+            self.ration = args
+        super().__init__(name)
+
     def swim(self):
         return f'{self.name} bird can swim'
 
@@ -113,7 +123,7 @@ class NonFlyingBird(FlyingBird):
             raise AttributeError(
                 f'{self.name} nobject has no attribute {name!r}')
         return super(NonFlyingBird, self).__getattribute__(name)
-   
+
     def __str__(self) -> str:
         return f'{self.name} can walk and fly'
 
@@ -121,8 +131,7 @@ class NonFlyingBird(FlyingBird):
         return f'It eats mostly {self.ration if isinstance(self.ration,str) else ",".join(self.ration)}'
 
 
-
-class SuperBird(Bird):
+class SuperBird(FlyingBird, NonFlyingBird):
     def __init__(self, name, *args):
         if not any(args):
             self.ration = 'fish'
@@ -135,9 +144,110 @@ class SuperBird(Bird):
 
     def __str__(self) -> str:
         return f'{self.name} can walk, swim and fly'
+
     def eat(self):
         return f'It eats {self.ration if isinstance(self.ration,str) else ",".join(self.ration)}'
 
 
+class Sun():
+    __instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if not isinstance(cls.__instance, cls):
+            cls.__instance = object.__new__(cls, *args, **kwargs)
+        return cls.__instance
+
+    def __init__(self):
+        print('instance created')
+
+    @classmethod
+    def inst(cls, *args, **kwargs):
+        return cls.__new__(cls, *args, **kwargs)
+
+
+class Money:
+    exchange_rate = {
+        'EUR': 0.93,
+        'BYN': 2.1,
+        'RUB': 70,
+        'JPY': 0.0090,
+        'USD': 1
+    }
+
+    def __init__(self, value: float, exchange: str = 'USD'):
+        self._value = value
+        self._extange = exchange
+
+    def __str__(self) -> str:
+        return f'{self._value:.2f} {self._extange}'
+
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__ }({self._value:.2f},{self._extange!r})'
+
+    def __add__(self, other):
+        try:
+            rate = Money.exchange_rate[other._extange] / \
+                Money.exchange_rate[self._extange]
+            return Money(self._value + other._value / rate, self._extange)
+        except AttributeError:
+            print(self, other)
+            return Money(self._value, self._extange)
+    __radd__ = __add__
+
+    def __iadd__(self, other):
+        rate = Money.exchange_rate[other._extange] / \
+            Money.exchange_rate[self._extange]
+        return Money(self._value + other._value * rate, self._extange)
+
+    def __sub__(self, other):
+        return Money(self._value - other._value, self._extange)
+
+    def __mul__(self, val):
+        return Money(self._value * val, self._extange)
+
+    def __rmul__(self, val):
+        return Money(self._value * val, self._extange)
+
+    def __truediv__(self, other):
+        return Money(self._value / other._value, self._extange)
+
+    # <
+    def __lt__(self, other):
+        rate = Money.exchange_rate[other._extange] / \
+            Money.exchange_rate[self._extange]
+        return self._value < other._value / rate
+    # >
+
+    def __gt__(self, other):
+        rate = Money.exchange_rate[other._extange] / \
+            Money.exchange_rate[self._extange]
+        return self._value > other._value / rate
+    # <=
+
+    def __le__(self, other):
+        rate = Money.exchange_rate[other._extange] / \
+            Money.exchange_rate[self._extange]
+        return self._value <= other._value / rate
+    # >=
+
+    def __ge__(self, other):
+        rate = Money.exchange_rate[other._extange] / \
+            Money.exchange_rate[self._extange]
+        return self._value >= other._value / rate
+    # ==
+
+    def __eq__(self, other):
+        rate = Money.exchange_rate[other._extange] / \
+            Money.exchange_rate[self._extange]
+        return self._value == other._value / rate
+    #!=
+
+    def __ne__(self, other):
+        rate = Money.exchange_rate[other._extange] / \
+            Money.exchange_rate[self._extange]
+        return self._value != other._value / rate
+
+Money(2.1,"BYN") == Money(1)
 if __name__ == '__main__':
-    pass
+    s = SuperBird("Gull")
+    SuperBird.__mro__

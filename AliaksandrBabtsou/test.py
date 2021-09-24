@@ -53,4 +53,25 @@ def test_task_6_1_4_FlyingBird():
 def test_task_6_1_4_SuperBird():
     s = SuperBird("Gull")
     assert str(s)=="Gull can walk, swim and fly"
-    assert s.eat()=="It eats fish"                
+    assert s.eat()=="It eats fish"
+    assert SuperBird.__mro__
+
+def test_singleton():
+    p = Sun.inst()
+    f = Sun.inst()
+    assert p is f
+
+def test_money():
+    x = Money(10, "BYN")
+    y = Money(11) # define your own default value, e.g. “USD”
+    z = Money(12.34, "EUR")
+    assert str(z + 3.11 * x + y * 0.8) == '34.30 EUR'
+
+    lst = [Money(10,"BYN"), Money(11), Money(12.01, "JPY")]
+    s = sum(lst)
+    assert str(s)=='2835.43 BYN'
+
+    assert Money(2.1,"BYN") == Money(1)
+    assert Money(0.93,"EUR") > Money(0.99)
+    assert Money(0.93,"EUR") != Money(0.99)
+    assert not Money(0.93,"EUR") < Money(0.99)
