@@ -75,3 +75,16 @@ def test_money():
     assert Money(0.93,"EUR") > Money(0.99)
     assert Money(0.93,"EUR") != Money(0.99)
     assert not Money(0.93,"EUR") < Money(0.99)
+
+def test_Pagination():
+    pages = Pagination('Your beautiful text', 5)
+    assert pages.page_count==4
+    assert pages.item_count==19
+    assert pages.count_items_on_page(0)==5
+    assert pages.count_items_on_page(3)==4
+    assert pages.count_items_on_page(4)=='Exception: Invalid index. Page is missing.'
+    assert pages.find_page('Your')==[0]
+    assert pages.find_page('e')==[1,3]
+    assert pages.find_page('beautiful')==[1, 2]
+    assert pages.find_page('great')=="Exception: 'great' is missing on the pages"
+    assert pages.display_page(0)== 'Your '
