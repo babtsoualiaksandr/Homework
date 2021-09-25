@@ -15,28 +15,29 @@ __all__ = [
     'Sun',
     'Money',
     'Pagination'
-
 ]
 
 
 class Counter:
 
     def __init__(self, start: int = 0, stop: int = -1):
-        self.__stop = stop
-        self.__counter = start
+        self._stop = stop
+        self._counter = start
 
     def get(self):
-        if self.__stop == -1:
-            return self.__counter
+        if self._stop == -1:
+            return self._counter
         else:
-            return self.__counter if self.__counter < self.__stop else self.__stop
+            return self._counter if self._counter < self._stop else self._stop
 
     def increment(self):
-        if self.__stop == -1:
-            self.__counter += 1
+        if self._stop == -1:
+            self._counter += 1
         else:
-            self.__counter = self.__counter + 1 if self.__counter < self.__stop else self.__stop
+            self._counter = self._counter + 1 if self._counter < self._stop else self._stop
             return 'Maximal value is reached.'
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__ }({self._stop!r},{self._counter!r})'
 
 
 class HistoryDict(dict):
@@ -54,6 +55,9 @@ class HistoryDict(dict):
 
     def get_history(self):
         return self.__items[-10:]
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__ }()'
+
 
 
 class Cipher:
@@ -78,6 +82,10 @@ class Cipher:
 
     def decode(self, val):
         return ''.join([self.__decode[iter] for iter in val])
+    
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__ }({self._keyword!r})'
+
 
 
 # import antigravity
@@ -108,6 +116,9 @@ class FlyingBird(Bird):
     def __str__(self) -> str:
         return f'{self.name} can walk and fly'
 
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__ }({self.name!r},{self.ration!r})'
+
 
 class NonFlyingBird(Bird):
     def __init__(self, name, *args):
@@ -128,7 +139,7 @@ class NonFlyingBird(Bird):
 
     def __str__(self) -> str:
         return f'{self.name} can walk and fly'
-
+    
     def eat(self):
         return f'It eats mostly {self.ration if isinstance(self.ration,str) else ",".join(self.ration)}'
 
@@ -165,6 +176,10 @@ class Sun():
     @classmethod
     def inst(cls, *args, **kwargs):
         return cls.__new__(cls, *args, **kwargs)
+
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__ }()'
+
 
 
 class Money:
@@ -213,36 +228,30 @@ class Money:
     def __truediv__(self, other):
         return Money(self._value / other._value, self._extange)
 
-    # <
     def __lt__(self, other):
         rate = Money.exchange_rate[other._extange] / \
             Money.exchange_rate[self._extange]
         return self._value < other._value / rate
-    # >
 
     def __gt__(self, other):
         rate = Money.exchange_rate[other._extange] / \
             Money.exchange_rate[self._extange]
         return self._value > other._value / rate
-    # <=
 
     def __le__(self, other):
         rate = Money.exchange_rate[other._extange] / \
             Money.exchange_rate[self._extange]
         return self._value <= other._value / rate
-    # >=
 
     def __ge__(self, other):
         rate = Money.exchange_rate[other._extange] / \
             Money.exchange_rate[self._extange]
         return self._value >= other._value / rate
-    # ==
-
+ 
     def __eq__(self, other):
         rate = Money.exchange_rate[other._extange] / \
             Money.exchange_rate[self._extange]
         return self._value == other._value / rate
-    #!=
 
     def __ne__(self, other):
         rate = Money.exchange_rate[other._extange] / \
@@ -279,6 +288,8 @@ class Pagination:
 
     def display_page(self, page_number: int) -> str:
         return self.pages[page_number]
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__ }({self.text},{self.size_page!r})'
 
 if __name__ == '__main__':
     s = SuperBird("Gull")
