@@ -11,8 +11,6 @@ logging.basicConfig(
         ]
     )
 
-
-
 def test_file_context_task7_1():
     test_text = "test-data from test pytest"
     name_file = 'output.txt'
