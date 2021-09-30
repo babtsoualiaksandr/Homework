@@ -10,7 +10,8 @@ __all__ = [
     'file_contex',
     'TrackEntryAndExit',
     'try_exc',
-    'is_even'
+    'is_even',
+    'MySquareIterator'
 ]
 
 
@@ -214,6 +215,91 @@ def goldbach():
             print(exc)
         finally:
             continue
+
+
+
+class MyNumberCollection():
+    def __init__(self, *args) -> None:
+        if len(args)==1:
+            if isinstance(args[0], tuple):
+                for item in args[0]:
+                    if not isinstance(item, int):
+                        raise TypeError('MyNumberCollection supports only numbers!')
+                self.items = list(args[0])
+            elif isinstance(args[0], str):
+                raise TypeError(f'{args[0]!r} - object is not a number!')
+        else:
+            self.items = [item for item in range(args[0], args[1], args[2])]
+    def __iter__(self):
+      return iter(self.items)
+    
+    def __str__(self) -> str:
+        return str(list(self.items))
+    
+    def append(self, val):
+        if isinstance(val, str):
+                raise TypeError(f'{val!r} - object is not a number!')
+        self.items.append(val)
+
+    def __add__(self, other):
+        result = self.items + other.items
+        return MyNumberCollection(tuple(result))
+
+    def __getitem__(self, idx):
+        return self.items[idx]
+
+class MySquareIterator():
+    def __init__(self, lst):
+        self.items = lst
+
+    def __iter__(self):
+      return iter([i**2 for i in self.items])
+
+
+class EvenRange():
+    def __init__(self, start, end):
+        self.start = start if start %2 ==0 else start+1 
+        self.end = end
+        self.num = self.start
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+      result = self.num
+      if result >= self.end:
+          print("Out of numbers!")
+          raise StopIteration
+      self.num+= 2
+      return result
+
+
+def endless_generator():
+    """ Implement a generator which will geterate odd  numbers endlessly """
+    a, b = 1, 3
+    while True:
+        yield a
+        a, b = b, b + 2
+
+
+def endless_fib_generator():
+    """ Implement a generator which will geterate Fibonacci numbers endlessly """
+    a, b, counter = 0, 1, 0
+    while True:
+        yield a
+        a, b = b, a + b
+        counter += 1
+        
+    
+    
+
+
+
+
+
+
+
+
+
 
             
 
