@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     keywords=['python', 'feed parser'],
     entry_points={
-        'console_scripts':  ['rss_reader = rss_reader.rss_reader: main']
+        'console_scripts':  ['rss_reader = src.rss_reader: main']
     },
     classifiers=[
         "Programming Language :: Python :: 3",

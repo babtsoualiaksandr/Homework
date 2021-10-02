@@ -1,9 +1,10 @@
 import sys 
-sys.path.append('..')
-from rss_reader.rss_reader import parse_args
-from rss_reader.rss_reader import get_version
+from src.rss_reader import parse_args
+from src.rss_reader import get_version
 import pytest
 import pkg_resources
+
+print(sys.path)
 
 
 def test_parse_args():
