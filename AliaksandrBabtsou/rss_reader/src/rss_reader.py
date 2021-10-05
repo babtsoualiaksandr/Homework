@@ -3,6 +3,7 @@ import argparse
 import sys 
 import log
 import sys
+from parser_xml import read_rss
 @log.log_decorator
 def parse_args(args: list) -> list:
     parser = argparse.ArgumentParser(
@@ -21,15 +22,18 @@ def parse_args(args: list) -> list:
 @log.log_decorator
 def get_version()-> str:
     version = f"Version { pkg_resources.require('rss_reader')[0].version}"
-    raise Exception
     return version
 
 @log.log_decorator
 def main():
     conf = parse_args(sys.argv[1:])
+    print(conf)
     if conf.verbose:
         log.logger.addHandler(log.log_stream)
     print(get_version())
+    print(read_rss(conf.source, limit=conf.limit, json_out=conf.json))
+
+
 
 
 if __name__ == '__main__':
