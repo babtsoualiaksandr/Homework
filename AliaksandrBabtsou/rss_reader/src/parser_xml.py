@@ -1,10 +1,13 @@
 from xml.dom import minidom
 from html.parser import HTMLParser
-import urllib.request
 import requests
 from log import log_decorator
 import json
 import ssl
+from urllib.request import urlopen, Request
+from xml.etree.ElementTree import parse
+
+
 ssl._create_default_https_context = ssl._create_unverified_context
 
 class RSSHTMLParser(HTMLParser):
@@ -33,58 +36,39 @@ class RSSHTMLParser(HTMLParser):
 @log_decorator
 def read_describe(url: str)-> dict:
     parser = RSSHTMLParser()
+    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_7; da-dk) AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1'
+}
+    req = requests.get(url, headers=headers)
+    if req.status_code != 200:
+        return None
     htm_from_url = requests.get(url).text
     htm_from_url = htm_from_url.replace('\n', '')
     parser.feed(htm_from_url)
     return parser.description
 
-
-
 @log_decorator
-def read_rss(url:str, limit:int=None, json_out: bool=False)-> dict:
-    req = urllib.request.urlopen(url)
-    if req.getcode()!=200:
-        return
-    rss_xml=req.read()
-    dom = minidom.parseString(rss_xml)
-    dom.normalize()
-    dom.version
-    with minidom.parseString(rss_xml) as dom:
-        result = []
+def read_rss(url:str, limit:int=None)-> dict:
+    u = urlopen(url)
+    doc = parse(u)
+    result =[]
+    items = []
+    
+    for idx, item in enumerate(doc.iterfind('channel/item')):
+        if idx== limit:
+           break
         res ={}
-        rss = dom.getElementsByTagName('rss')
-        version_rss = rss[0].getAttribute('version')
-        res['version'] = version_rss
-        title = dom.getElementsByTagName('title')[0].childNodes[0].nodeValue
-        res['Feed'] = title
-        result.append(res)
-        items = dom.getElementsByTagName('item')
-
-        limit = len(items) if limit is None else limit
-        for i, item in enumerate(items):
-            res={}
-            if i== limit:
-                break
-            else:
-                title_item = item.getElementsByTagName('title')[0].childNodes[0].nodeValue
-                res['Title'] = title_item
-                date_item = item.getElementsByTagName('pubDate')[0].childNodes[0].nodeValue
-                res['Date'] = date_item
-                link_item = item.getElementsByTagName('link')[0].childNodes[0].nodeValue
-                res['Link'] = link_item
-                res['describe_link'] = read_describe(link_item)
-                urls_links =[link_item]  
-                
-
-                for el in item.childNodes:
-                    url_attribute = el.getAttribute('url')
-                    if url_attribute != '':
-                        urls_links.append(url_attribute)
-                res['Links'] = urls_links
-
-                result.append(res)
-    return result if not json_out else json.dumps(result)
-
+        urls=[]
+        res['Title'] = item.find('title').text
+        res['Date'] = item.find('pubDate').text
+        res['Link'] = item.find('link').text
+        res['describe_link'] = read_describe(res['Link'])
+        for el in item:
+            if 'url' in el.attrib:
+                urls.append(el.attrib['url'])
+        res['Links'] = urls
+        items.append(res)
+    result.append({'url' : url, 'Feed': doc.find('channel').find('title').text, 'items': items}) 
+    return result
 if __name__=='__main__':
     url = 'https://news.yahoo.com/rss/'
     print(read_rss(url,limit=10, json_out= True))
