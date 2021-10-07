@@ -31,8 +31,8 @@ def format_output(rss_out:object, json_out:bool)->None:
     if json_out:
         print(json.dumps(rss_out,ensure_ascii=False))
     else:
-        print('Feed:',rss_out[0]['Feed'],'\n')
-        for item in rss_out[0]['items']:
+        print('\033[95m','Feed:',rss_out['Feed'],'\n')
+        for item in rss_out['items']:
             print('Title:',item['Title'])
             print('Date:',item['Date'])
             print('Link:',item['Link'],'\n')

@@ -38,9 +38,9 @@ def test_read_rss():
     url = 'https://news.yahoo.com/rss/'
     result = read_rss(url,1)
     assert result[0]['Feed'] == 'Yahoo News - Latest News & Headlines'
-    assert result[1]['Title'] == 'Man accused in co-worker deaths tells deputies he was raped'
-    assert result[1]['Link'] == 'https://news.yahoo.com/man-accused-co-worker-deaths-193312526.html'
-    assert result[1]['Date'] == '2021-10-04T19:33:12Z'
+    assert result[0][0]['Title'] == 'Man accused in co-worker deaths tells deputies he was raped'
+    assert result[0][0]['Link'] == 'https://news.yahoo.com/man-accused-co-worker-deaths-193312526.html'
+    assert result[0][0]['Date'] == '2021-10-04T19:33:12Z'
 
 """
 Feed: Yahoo News - Latest News & Headlines

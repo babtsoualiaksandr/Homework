@@ -50,7 +50,6 @@ def read_describe(url: str)-> dict:
 def read_rss(url:str, limit:int=None)-> dict:
     u = urlopen(url)
     doc = parse(u)
-    result =[]
     items = []
     
     for idx, item in enumerate(doc.iterfind('channel/item')):
@@ -67,7 +66,7 @@ def read_rss(url:str, limit:int=None)-> dict:
                 urls.append(el.attrib['url'])
         res['Links'] = urls
         items.append(res)
-    result.append({'url' : url, 'Feed': doc.find('channel').find('title').text, 'items': items}) 
+    result = {'url' : url, 'Feed': doc.find('channel').find('title').text, 'items': items} 
     return result
 if __name__=='__main__':
     url = 'https://news.yahoo.com/rss/'
