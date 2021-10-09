@@ -6,7 +6,7 @@ import argparse
 import sys
 import log
 import sys
-from models import Feed
+from models import Feed, ListFeeds
 from parser_xml import read_rss
 from local_storage import LocalStorage
 
@@ -38,24 +38,24 @@ def get_version() -> str:
 def format_output(_rss_out: Feed, json_out: bool) -> None:
 
     def print_out(feed: Feed) -> None:
-        print('Feed:', feed.Feed, '\n')
+        print('Feed:', feed.feed_title, '\n')
         for item in feed.items:
-            print('Title:', item.Title)
-            print('Date:', item.Date)
-            print('Link:', item.Link, '\n')
+            print('Title:', item.item_title)
+            print('Date:', item.date)
+            print('Link:', item.link, '\n')
 
             print(f"[{item.description}]", '\n')
             print('Links:'),
 
-            for idx, link in enumerate(item.Links):
+            for idx, link in enumerate(item.links):
                 print(f'[{idx+1}] {link}')
             print('\n')
 
     if json_out:
         print(json.dumps(dataclasses.asdict(_rss_out), ensure_ascii=False))
     else:
-        if isinstance(_rss_out, list):
-            for feed in _rss_out:
+        if isinstance(_rss_out, ListFeeds):
+            for feed in _rss_out.feeds:
                 print_out(feed)
         else:
             print_out(_rss_out)

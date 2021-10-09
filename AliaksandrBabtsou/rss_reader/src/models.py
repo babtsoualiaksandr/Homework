@@ -4,22 +4,22 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class Item:
-    Title: str
-    Date: str
-    Link: str
+    item_title: str
+    date: str
+    link: str
     description: str
-    Links: list[str]
+    links: list[str]
 
 
 @dataclass(frozen=True)
 class Feed:
     url: str
-    Feed: str
+    feed_title: str
     items: list[Item]
 
 @dataclass(frozen=True)
 class ListFeeds:
-    Feeds:list[Feed]        
+    feeds:list[Feed]        
 
 
 
