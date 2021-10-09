@@ -6,9 +6,10 @@ import argparse
 import sys
 import log
 import sys
-from models import Feed, ListFeeds
+from models import Feed, ListFeeds, Colors
 from parser_xml import read_rss
 from local_storage import LocalStorage
+
 
 
 @log.log_decorator
@@ -38,14 +39,14 @@ def get_version() -> str:
 def format_output(_rss_out: Feed, json_out: bool) -> None:
 
     def print_out(feed: Feed) -> None:
-        print('Feed:', feed.feed_title, '\n')
+        print(f'{Colors.FAIL}Feed:', feed.feed_title, '\n')
         for item in feed.items:
-            print('Title:', item.item_title)
-            print('Date:', item.date)
-            print('Link:', item.link, '\n')
+            print(f'{Colors.blue}Title:', item.item_title)
+            print(f'{Colors.green}Date:', item.date)
+            print(f'{Colors.orange}Link:', item.link, '\n')
 
-            print(f"[{item.description}]", '\n')
-            print('Links:'),
+            print(f"{Colors.purple}[{item.description}]", '\n')
+            print(f'{Colors.red}Links:'),
 
             for idx, link in enumerate(item.links):
                 print(f'[{idx+1}] {link}')

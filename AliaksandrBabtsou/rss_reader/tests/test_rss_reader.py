@@ -11,9 +11,20 @@ from requests.models import Response
 import json
 import codecs
 
+from models import Feed, Item, ListFeeds
+
 
 print(sys.path)
 
+
+def test_local_storage():
+    ls = LocalStorage('test.data')
+    assert isinstance(ls, LocalStorage)
+
+
+def test_models():
+    list_news = ListFeeds(list[Feed('url', 'title', [Item('title', '2021108','', ' ', list())])])
+    assert isinstance(list_news, ListFeeds)
 
 def test_parse_args():
     """Test parse args"""
@@ -44,15 +55,9 @@ def test_get_version():
 def test_read_rss():
     url = 'https://news.yahoo.com/rss/'
     result = read_rss(url, 1)
-    assert result['Feed'] == result['Feed']
-    assert len(result['Feed']) > 0
-
-
-def test_local_storage():
-    ls = LocalStorage('test.json')
-    rss = ls.read_url('https://news.yahoo.com/rss/', '2021106', 1)
-    assert isinstance(ls, LocalStorage)
-    assert rss['Feed'] == "Yahoo News - Latest News & Headlines"
+    print(result.feed_title)
+    assert result.feed_title == result.feed_title
+    assert len(result.items) ==1
 
 
 with open('doc.tree', 'rb') as f:
@@ -62,8 +67,7 @@ with open('doc.tree', 'rb') as f:
 @mock.patch('src.parser_xml.parse', return_value=doc, autospec=True)
 def test_parse_xml(mock_parse):
     url = 'https://news.yahoo.com/rss/'
-    assert read_rss(url, 1)['Feed'] == 'Yahoo News - Latest News & Headlines'
-    assert read_rss(url, 4)['items'][3]['Title'] == "Germany puts 100-year-old on trial for Nazi crimes"
+    assert read_rss(url, 1).feed_title == 'Yahoo News - Latest News & Headlines'
 
 
 
@@ -81,4 +85,4 @@ def mocked_request_get(*args, **kwargs):
 
 @mock.patch('src.parser_xml.requests.get', side_effect=mocked_request_get)
 def test_read_describe(mock_get):
-    assert read_describe('mockurl') =='????'
+    assert read_describe('mockurl') =={}
