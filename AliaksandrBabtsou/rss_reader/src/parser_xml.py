@@ -12,6 +12,7 @@ from models import Feed, Item
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
+
 class RSSHTMLParser(HTMLParser):
     def __init__(self):
         self.check = None
@@ -35,15 +36,17 @@ class RSSHTMLParser(HTMLParser):
         self.result = []
         return super().close()
 
+
 @log_decorator
 def read_describe(url: str) -> dict:
     parser = RSSHTMLParser()
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_7; da-dk) AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1'}
+        'User-Agent': """Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_7; da-dk)
+         AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1"""}
     req = requests.get(url, headers=headers)
     if req.status_code != 200:
         return None
-    htm_from_url = req.text    
+    htm_from_url = req.text
     htm_from_url = htm_from_url.replace('\n', '')
     parser.feed(htm_from_url)
     return parser.description
@@ -54,7 +57,6 @@ def read_rss(url: str, limit: int = None) -> Feed:
     u = urlopen(url)
     doc = parse(u)
     items = []
-    
 
     for idx, item in enumerate(doc.iterfind('channel/item')):
         res = {}
@@ -72,8 +74,7 @@ def read_rss(url: str, limit: int = None) -> Feed:
         if limit is not None:
             if idx == limit-1:
                 break
-    #result = {'url': url, 'Feed': doc.find('channel').find('title').text, 'items': items}
-    result = Feed(url,doc.find('channel').find('title').text, items)
+    result = Feed(url, doc.find('channel').find('title').text, items)
     return result
 
 

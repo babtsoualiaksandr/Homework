@@ -28,7 +28,7 @@ class LocalStorage():
             feeds_storage = pickle.load(f)
             print(feeds_storage)
 
-        def equal_date(item:Item)->bool:
+        def equal_date(item: Item) -> bool:
             dt = parse(item.date)
             dt_str = f'{dt.year}{dt.month}{dt.day}'
             if dt_str == date_filter:

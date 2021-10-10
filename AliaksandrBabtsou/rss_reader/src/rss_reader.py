@@ -11,7 +11,6 @@ from parser_xml import read_rss
 from local_storage import LocalStorage
 
 
-
 @log.log_decorator
 def parse_args(args: list) -> list:
     parser = argparse.ArgumentParser(
@@ -37,21 +36,16 @@ def get_version() -> str:
 
 
 def format_output(_rss_out: Feed, json_out: bool) -> None:
-
     def print_out(feed: Feed) -> None:
-        print(f'{Colors.FAIL}Feed:', feed.feed_title, '\n')
+        print(f'{Colors.FAIL}Feed: {feed.feed_title}')
         for item in feed.items:
-            print(f'{Colors.blue}Title:', item.item_title)
-            print(f'{Colors.green}Date:', item.date)
-            print(f'{Colors.orange}Link:', item.link, '\n')
-
-            print(f"{Colors.purple}[{item.description}]", '\n')
-            print(f'{Colors.red}Links:'),
-
+            print(f'{Colors.blue}Title: {item.item_title}')
+            print(f'{Colors.green}Date: {item.date}')
+            print(f'{Colors.orange}Link: {item.link}')
+            print(f'{Colors.purple}[ {item.description}]')
+            print(f'{Colors.red}Links:')
             for idx, link in enumerate(item.links):
                 print(f'[{idx+1}] {link}')
-            print('\n')
-
     if json_out:
         print(json.dumps(dataclasses.asdict(_rss_out), ensure_ascii=False))
     else:
@@ -78,7 +72,7 @@ def main():
             rss_out = ls.read_all(conf.date, conf.limit)
     else:
         rss_out = read_rss(conf.source, limit=conf.limit)
-        
+
         ls.append(rss_data=rss_out)
     format_output(rss_out, json_out=conf.json)
 
