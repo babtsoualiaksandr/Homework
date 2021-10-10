@@ -12,6 +12,10 @@ setup(
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     packages=find_packages('src'),
+    include_package_data=True,
+    package_data={
+        'static': ['*.*'],
+    },
     install_requires=[],
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],

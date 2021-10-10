@@ -9,6 +9,7 @@ import sys
 from models import Feed, ListFeeds, Colors
 from parser_xml import read_rss
 from local_storage import LocalStorage
+from pdf import PDF
 
 
 @log.log_decorator
@@ -25,6 +26,10 @@ def parse_args(args: list) -> list:
                         help='Limit news topics if this parameter provided')
     parser.add_argument('--date', action='store', type=str, required=False,
                         help="Date in <20191020> format means actual publishing date the news.")
+    parser.add_argument('--to-pdf', action='store_true', required=False,
+                        help="PDF which format will be generated")
+    parser.add_argument('--to-html', action='store_true', required=False,
+                        help="HTML which format will be generated")
     parser.add_argument('source', nargs='?', help='RSS URL')
     return parser.parse_args(args)
 
@@ -46,6 +51,7 @@ def format_output(_rss_out: Feed, json_out: bool) -> None:
             print(f'{Colors.red}Links:')
             for idx, link in enumerate(item.links):
                 print(f'[{idx+1}] {link}')
+
     if json_out:
         print(json.dumps(dataclasses.asdict(_rss_out), ensure_ascii=False))
     else:
@@ -54,6 +60,7 @@ def format_output(_rss_out: Feed, json_out: bool) -> None:
                 print_out(feed)
         else:
             print_out(_rss_out)
+    print(Colors.blue)
 
 
 @log.log_decorator
@@ -74,7 +81,17 @@ def main():
         rss_out = read_rss(conf.source, limit=conf.limit)
 
         ls.append(rss_data=rss_out)
+
     format_output(rss_out, json_out=conf.json)
+
+    if conf.to_pdf:
+        pdf = PDF()
+        if isinstance(rss_out, ListFeeds):
+            for feed in rss_out.feeds:
+                pdf.print_page(feed)
+        else:
+            pdf.print_page(rss_out)
+        pdf.output('output_.pdf', 'F')
 
 
 if __name__ == '__main__':

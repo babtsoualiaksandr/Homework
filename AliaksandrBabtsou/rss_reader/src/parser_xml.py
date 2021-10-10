@@ -15,7 +15,8 @@ ssl._create_default_https_context = ssl._create_unverified_context
 class RSSHTMLParser(HTMLParser):
     def __init__(self):
         self.check = None
-        self.description = {}
+        self.description = ''
+        self.title = ''
         super().__init__()
 
     def handle_starttag(self, tag, attrs):
@@ -24,11 +25,11 @@ class RSSHTMLParser(HTMLParser):
         if tag == "meta":
             self.check = 'meta content'
             if ('name', 'twitter:description') in attrs:
-                _, self.description['description'] = attrs[1]
+                _, self.description = attrs[1]
 
     def handle_data(self, data):
         if self.check == 'h1':
-            self.description['title'] = data
+            self.title = data
         self.check = None
 
     def close(self) -> None:

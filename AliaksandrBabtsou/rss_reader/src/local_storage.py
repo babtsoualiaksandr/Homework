@@ -48,7 +48,7 @@ class LocalStorage():
         result = ListFeeds(list())
         with open(self._path, 'rb') as f:
             feeds_storage = pickle.load(f)
-        for item_feed in feeds_storage:
+        for item_feed in feeds_storage.feeds:
             feed = self.read_url(item_feed.url, filter_date, limit)
             if len(feed.items) != 0:
                 result.feeds.append(feed)
