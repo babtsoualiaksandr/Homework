@@ -1,6 +1,5 @@
 from xml.dom import minidom
 from html.parser import HTMLParser
-import requests
 from log import log_decorator
 import json
 import ssl
@@ -43,10 +42,11 @@ def read_describe(url: str) -> dict:
     headers = {
         'User-Agent': """Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_7; da-dk)
          AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1"""}
-    req = requests.get(url, headers=headers)
-    if req.status_code != 200:
+    req = urlopen(url=url)
+    if req.status != 200:
         return None
-    htm_from_url = req.text
+    data = req.read()
+    htm_from_url = data.decode('utf8')
     htm_from_url = htm_from_url.replace('\n', '')
     parser.feed(htm_from_url)
     return parser.description

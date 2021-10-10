@@ -7,7 +7,6 @@ import pytest
 import pkg_resources
 from unittest import mock
 import pickle
-from requests.models import Response
 import json
 import codecs
 
@@ -46,19 +45,16 @@ def test_parse_args():
     url = 'https://news.yahoo.com/rss/'
     args = parse_args([url, "--json"])
     assert args.json
-    assert args.version
-    assert args.verbose
-    assert args.limit
-    assert args.source
+    assert not args.version
+    assert not args.verbose
     args = parse_args([url, "--json", "--version"])
     assert args.json
     assert args.version
-    assert args.verbose
-    assert isinstance(args.limit, None)
+    assert not args.verbose
     args = parse_args([url, "--limit", "100"])
-    assert args.json
-    assert args.version
-    assert args.verbose
+    assert not args.json
+    assert not args.version
+    assert not args.verbose
     assert args.limit == 100
 
 
@@ -83,21 +79,3 @@ with open('doc.tree', 'rb') as f:
 def test_parse_xml(mock_parse):
     url = 'https://news.yahoo.com/rss/'
     assert read_rss(url, 1).feed_title == 'Yahoo News - Latest News & Headlines'
-
-
-def mocked_request_get(*args, **kwargs):
-    response_content = None
-    with codecs.open('test_describe.html', 'r', "utf-8") as f:
-        html_text = f.read()
-    html_text = html_text.replace('\n', '')
-    request_url = kwargs.get('url', None)
-    response_content = json.dumps(html_text)
-    response = Response()
-    response.status_code = 200
-    response._content = str.encode(response_content)
-    return response
-
-
-@mock.patch('src.parser_xml.requests.get', side_effect=mocked_request_get)
-def test_read_describe(mock_get):
-    assert read_describe('mockurl') == {}
