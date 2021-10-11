@@ -6,10 +6,12 @@ import argparse
 import sys
 import log
 import sys
-from models import Feed, ListFeeds, Colors
+from models import Feed, ListFeeds
+from utilits import Colors
 from parser_xml import read_rss
 from local_storage import LocalStorage
 from pdf import PDF
+from print_to_html import print_HTML
 
 
 @log.log_decorator
@@ -30,6 +32,8 @@ def parse_args(args: list) -> list:
                         help="PDF which format will be generated")
     parser.add_argument('--to-html', action='store_true', required=False,
                         help="HTML which format will be generated")
+    parser.add_argument('--colorize', action='store_true', required=False,
+                        help="print the result of the utility in colorized mode")
     parser.add_argument('source', nargs='?', help='RSS URL')
     return parser.parse_args(args)
 
@@ -40,15 +44,15 @@ def get_version() -> str:
     return version
 
 
-def format_output(_rss_out: Feed, json_out: bool) -> None:
+def format_output(_rss_out: Feed, json_out: bool, colors: Colors) -> None:
     def print_out(feed: Feed) -> None:
-        print(f'{Colors.FAIL}Feed: {feed.feed_title}')
+        print(f'{colors.red}Feed: {feed.feed_title}')
         for item in feed.items:
-            print(f'{Colors.blue}Title: {item.item_title}')
-            print(f'{Colors.green}Date: {item.date}')
-            print(f'{Colors.orange}Link: {item.link}')
-            print(f'{Colors.purple}[ {item.description}]')
-            print(f'{Colors.red}Links:')
+            print(f'{colors.blue}Title: {item.item_title}')
+            print(f'{colors.green}Date: {item.date}')
+            print(f'{colors.orange}Link: {item.link}')
+            print(f'{colors.purple}[ {item.description}]')
+            print(f'{colors.red}Links:')
             for idx, link in enumerate(item.links):
                 print(f'[{idx+1}] {link}')
 
@@ -60,12 +64,16 @@ def format_output(_rss_out: Feed, json_out: bool) -> None:
                 print_out(feed)
         else:
             print_out(_rss_out)
-    print(Colors.blue)
+    print(colors.blue)
 
 
 @log.log_decorator
 def main():
     conf = parse_args(sys.argv[1:])
+    if conf.colorize:
+        colors = Colors(True)
+    else:
+        colors = Colors(False)
     if conf.verbose:
         log.logger.addHandler(log.log_stream)
     if conf.version:
@@ -82,7 +90,7 @@ def main():
 
         ls.append(rss_data=rss_out)
 
-    format_output(rss_out, json_out=conf.json)
+    format_output(rss_out, json_out=conf.json, colors=colors)
 
     if conf.to_pdf:
         pdf = PDF()
@@ -92,6 +100,9 @@ def main():
         else:
             pdf.print_page(rss_out)
         pdf.output('output_.pdf', 'F')
+
+    if conf.to_html:
+        print_HTML(rss_out)
 
 
 if __name__ == '__main__':

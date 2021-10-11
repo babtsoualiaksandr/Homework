@@ -1,4 +1,4 @@
-from typing import List, final
+from typing import List
 import requests
 from requests.models import HTTPError
 import log
@@ -57,3 +57,41 @@ def is_url_image(image_url: str) -> bool:
         if req.headers["content-type"] in image_formats:
             result = True
     return result
+
+
+class Colors:
+
+    def __init__(self, is_color: bool = False):
+        if is_color:
+            self.black = '\033[30m'
+            self.red = '\033[31m'
+            self.green = '\033[32m'
+            self.orange = '\033[33m'
+            self.blue = '\033[34m'
+            self.purple = '\033[35m'
+            self.cyan = '\033[36m'
+            self.lightgrey = '\033[37m'
+            self.darkgrey = '\033[90m'
+            self.lightred = '\033[91m'
+            self.lightgreen = '\033[92m'
+            self.yellow = '\033[93m'
+            self.lightblue = '\033[94m'
+            self.pink = '\033[95m'
+            self.lightcyan = '\033[96m'
+        else:
+            self.black = None
+            self.red = None
+            self.green = None
+            self.orange = None
+            self.blue = None
+            self.purple = None
+            self.cyan = None
+            self.lightgrey = None
+            self.darkgrey = None
+            self.lightred = None
+            self.lightgreen = None
+            self.yellow = None
+            self.lightblue = None
+            self.pink = None
+            self.lightcyan = None
+            
