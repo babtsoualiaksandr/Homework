@@ -5,4 +5,4 @@ try:
     from . import rss_reader
     from . import log
 except ImportError as err:
-    raise ImportError(err.msg)
+    raise ImportError(err)

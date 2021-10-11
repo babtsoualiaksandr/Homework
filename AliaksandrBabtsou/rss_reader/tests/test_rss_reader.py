@@ -13,7 +13,7 @@ import codecs
 from models import Feed, Item, ListFeeds
 from io import StringIO
 
-from utilits import get_rows_from_text
+from utilits import Colors, get_rows_from_text
 
 
 print(sys.path)
@@ -28,8 +28,8 @@ def get_feed():
 
 def test_format_output(get_feed):
     with mock.patch('sys.stdout', new=StringIO()) as fake_out:
-        format_output(get_feed, json_out=False)
-        assert fake_out.getvalue()[:20] == """\x1b[91mFeed: feed_titl"""[:20]
+        format_output(get_feed, json_out=False, colors=Colors(True))
+        assert fake_out.getvalue()[:20] == """\x1b[31mFeed: feed_titl"""[:20]
 
 
 def test_local_storage():

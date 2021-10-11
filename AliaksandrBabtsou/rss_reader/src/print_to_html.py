@@ -1,20 +1,19 @@
-from os import write
 from models import Feed, ListFeeds
 from datetime import datetime
 import pkg_resources
 from urllib.parse import urlparse
 from log import log_decorator
+import os
+from pathlib import Path
 
 from utilits import is_url_image
 
-path_ = '../static/rss_512.png'
-logo_rss = pkg_resources.resource_filename(__name__, path_)
-path_ = '../static/epam_.png'
-logo_EPAM = pkg_resources.resource_filename(__name__, path_)
+logo_rss = pkg_resources.resource_filename(__name__, 'static/rss_512.png')
+logo_EPAM = pkg_resources.resource_filename(__name__, 'static/epam_.png')
 
 
 def output_to(feed: Feed, f):
-    print(feed)
+
     head = f'''
         <!doctype html>
         <html lang="en">
@@ -29,7 +28,7 @@ def output_to(feed: Feed, f):
         <body>           
             <a href="https://www.epam.com/" class="list-group-item list-group-item-action d-flex \\ 
             gap-3 py-3" aria-current="true">
-                <img src="{logo_EPAM}" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
+                <img src="{logo_EPAM}" alt="logo_Epam" width="32" height="32" class="rounded-circle flex-shrink-0">
                 <div class="d-flex gap-2 w-100 justify-content-between">
                 <div>
                     <h6 class="mb-0">EPAM Python Training 2021.09</h6>
@@ -43,7 +42,7 @@ def output_to(feed: Feed, f):
     rss_feed = f'''
             <a href="{url_news.scheme+'://'+url_news.netloc}" class="list-group-item \\ 
             list-group-item-action d-flex gap-3 py-3" aria-current="true">
-            <img src="{logo_rss}" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
+            <img src="{logo_rss}" alt="rss" width="32" height="32" class="rounded-circle flex-shrink-0">
              {url_news.netloc}
             <div class="d-flex gap-2 w-100 justify-content-between">
                 <div>

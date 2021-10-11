@@ -7,6 +7,7 @@ import copy
 import pickle
 
 from models import Feed, Item, ListFeeds
+from utilits import ExceptionFormatDate, ExceptionNotFoudNewsDate
 
 
 class LocalStorage():
@@ -22,11 +23,10 @@ class LocalStorage():
     def read_url(self, url: str, date_filter: str, limit: int = None) -> Feed:
         try:
             datetime.strptime(date_filter, '%Y%m%d')
-        except ValueError:
-            raise ValueError("Incorrect data format, should be %Y%m%d")
+        except Exception:
+            raise ExceptionFormatDate("Incorrect data format, should be %Y%m%d")
         with open(self._path, 'rb') as f:
             feeds_storage = pickle.load(f)
-            print(feeds_storage)
 
         def equal_date(item: Item) -> bool:
             dt = parse(item.date)
@@ -42,7 +42,7 @@ class LocalStorage():
             find_news_date = [item for item in find_in_storage.items if equal_date(item)]
             return Feed(find_in_storage.url, find_in_storage.feed_title, find_news_date[:limit])
         else:
-            raise Exception(f'Is not news {url}')
+            raise ExceptionNotFoudNewsDate(f'Is not news {url}')
 
     def read_all(self, filter_date: str, limit: int = None) -> ListFeeds:
         result = ListFeeds(list())
@@ -53,7 +53,7 @@ class LocalStorage():
             if len(feed.items) != 0:
                 result.feeds.append(feed)
         if len(result.feeds) == 0:
-            raise Exception(f'Is not news in {filter_date}')
+            raise ExceptionNotFoudNewsDate(f'Is not news in {filter_date}')
 
         return result
 

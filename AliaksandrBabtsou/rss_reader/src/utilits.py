@@ -26,7 +26,6 @@ class FormatRows:
         else:
             result = set()
             for idx in idxes_start:
-                print(idx)
                 result.add(idx//self.size_page)
                 result.add((idx+len(search_str))//self.size_page)
             return list(result)
@@ -51,7 +50,6 @@ def is_url_image(image_url: str) -> bool:
         headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:57.0) Gecko/20100101 Firefox/57.0'}
         req = requests.get(image_url, headers=headers, timeout=5)
     except Exception as err:
-        print(err)
         result = False
     else:
         if req.headers["content-type"] in image_formats:
@@ -79,19 +77,28 @@ class Colors:
             self.pink = '\033[95m'
             self.lightcyan = '\033[96m'
         else:
-            self.black = None
-            self.red = None
-            self.green = None
-            self.orange = None
-            self.blue = None
-            self.purple = None
-            self.cyan = None
-            self.lightgrey = None
-            self.darkgrey = None
-            self.lightred = None
-            self.lightgreen = None
-            self.yellow = None
-            self.lightblue = None
-            self.pink = None
-            self.lightcyan = None
-            
+            self.black = ''
+            self.red = ''
+            self.green = ''
+            self.orange = ''
+            self.blue = ''
+            self.purple = ''
+            self.cyan = ''
+            self.lightgrey = ''
+            self.darkgrey = ''
+            self.lightred = ''
+            self.lightgreen = ''
+            self.yellow = ''
+            self.lightblue = ''
+            self.pink = ''
+            self.lightcyan = ''
+
+
+class ExceptionNotFoudNewsDate(Exception):
+    """Exception Not Foud NewsDate in local storage"""
+    pass
+
+
+class ExceptionFormatDate(Exception):
+    """Exception in Format Date"""
+    pass

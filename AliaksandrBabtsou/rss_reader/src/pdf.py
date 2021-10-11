@@ -9,10 +9,10 @@ import pkg_resources
 from utilits import FormatRows, get_rows_from_text, is_url_image
 from urllib.request import urlopen
 
-path_tp_logo = '../static/EPAM_logo.png'
+path_tp_logo = 'static/EPAM_logo.png'
 filelogo = pkg_resources.resource_filename(__name__, path_tp_logo)
 
-path_tp_font = '../static/fonts/DejaVuSans-Bold.ttf'
+path_tp_font = 'static/fonts/DejaVuSans-Bold.ttf'
 font_DejaVu = pkg_resources.resource_filename(__name__, path_tp_font)
 
 

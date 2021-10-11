@@ -55,6 +55,7 @@ def format_output(_rss_out: Feed, json_out: bool, colors: Colors) -> None:
             print(f'{colors.red}Links:')
             for idx, link in enumerate(item.links):
                 print(f'[{idx+1}] {link}')
+            print('\n')
 
     if json_out:
         print(json.dumps(dataclasses.asdict(_rss_out), ensure_ascii=False))
