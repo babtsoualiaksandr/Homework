@@ -16,7 +16,7 @@ setup(
     package_data={
         'src': ['static/*.*'],
     },
-    install_requires=[],
+    install_requires=['requests', 'python-dateutil', 'fpdf2'],
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
     keywords=['python', 'feed parser'],
