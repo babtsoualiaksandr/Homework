@@ -1,0 +1,1 @@
+from .src.rss_reader import get_all_news_from_url

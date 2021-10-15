@@ -69,6 +69,11 @@ def format_output(_rss_out: Feed, json_out: bool, colors: Colors) -> None:
 
 
 @log.log_decorator
+def get_all_news_from_url(url='https://news.un.org/feed/subscribe/en/news/region/africa/feed/rss.xml', limit: int = 1,):
+    return read_rss(url, limit)
+
+
+@log.log_decorator
 def main():
     conf = parse_args(sys.argv[1:])
     if conf.colorize:
