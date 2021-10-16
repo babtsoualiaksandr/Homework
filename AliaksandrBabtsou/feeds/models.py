@@ -3,7 +3,8 @@ from django.db import models
 
 class Feed(models.Model):
     title = models.CharField(max_length=250, blank=True, default='')
-    url_feed = models.CharField(max_length=250, blank=True, default='', unique=True)
+    url_feed = models.CharField(
+        max_length=250, blank=True, default='', unique=True)
     owner = models.ForeignKey(
         'auth.User', related_name='feeds', on_delete=models.CASCADE)
 
@@ -36,3 +37,21 @@ class Link(models.Model):
 
     def __str__(self):
         return f'{self.link} {self.item}'
+
+
+CHOICES_FORMAT_OUTPUT = [
+    ('J', 'Json'),
+    ('H', 'HTML'),
+    ('P', 'PDF'),
+]
+
+
+class RssReader(models.Model):
+    url = models.URLField(max_length=250, blank=True)
+    limit = models.SmallIntegerField(blank=True)
+    format = models.CharField(choices=CHOICES_FORMAT_OUTPUT,
+                              default='Json', max_length=10)
+    owner = models.ForeignKey(
+        'auth.User', related_name='Rssreaders', on_delete=models.CASCADE)
+    date_req = models.DateField(auto_now=False, auto_now_add=True)
+    date_from_db = models.DateField(auto_now=False, auto_now_add=False)

@@ -6,3 +6,4 @@ psycopg2-binary
 requests
 python-dateutil
 fpdf2
+django-rest-swagger

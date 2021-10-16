@@ -1,3 +1,7 @@
+import rest_framework
+from feeds.serializers import RegisterSerializer
+from feeds.models import RssReader
+from feeds.serializers import RssReaderSerializer
 from django.http.response import JsonResponse
 from rest_framework import status
 from feeds.permissions import IsOwnerOrReadOnly
@@ -19,11 +23,9 @@ class FeedViewSet(viewsets.ModelViewSet):
     """
     queryset = Feed.objects.all()
     serializer_class = FeedSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
-                          IsOwnerOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
 
     def perform_create(self, serializer):
-        print(self.request)
         serializer.save(owner=self.request.user)
 
 
@@ -33,6 +35,12 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+class RegisterView(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = RegisterSerializer
 
 
 class ItemViewSet(viewsets.ModelViewSet):
@@ -55,14 +63,22 @@ class LinkViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
-def get_news_from_url(request):
+class RssReaderViewSet(viewsets.ModelViewSet):
     """
-    Retrieve, update or delete a code snippet.
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
     """
-    if request.method == 'GET':
+    queryset = RssReader.objects.all()
+    serializer_class = RssReaderSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+        print(self.request)
+        print(serializer)
         try:
             _feed = get_all_news_from_url(
-                url="https://news.un.org/feed/subscribe/en/news/topic/health/feed/rss.xml", limit=13)
+                url=serializer.data['url'], limit=serializer.data['limit'])
         except Exception as err:
             print(err)
         try:
@@ -70,7 +86,7 @@ def get_news_from_url(request):
         except Exception as err:
             print(err)
             new_feed = Feed(url_feed=_feed.url,
-                            title=_feed.feed_title, owner=request.user)
+                            title=_feed.feed_title, owner=self.request.user)
             new_feed.save()
 
         for item in _feed.items:
@@ -92,7 +108,3 @@ def get_news_from_url(request):
                     new_link = Link(link=link)
                     new_link.item = new_item
                     new_link.save()
-        result_feed = generics.get_object_or_404(Feed, url_feed=_feed.url)
-
-        serializer = FeedSerializer(result_feed, context={'request': request})
-        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)

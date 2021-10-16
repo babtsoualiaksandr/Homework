@@ -16,8 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from django.views.generic import TemplateView
+
 from rest_framework.schemas import get_schema_view
+from rest_framework_swagger.renderers import SwaggerUIRenderer, OpenAPIRenderer
+
+
+schema_view = get_schema_view(title='Users API', renderer_classes=[
+    OpenAPIRenderer, SwaggerUIRenderer])
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,7 +30,10 @@ urlpatterns = [
     path('', include('feeds.urls')),
     path('openapi', get_schema_view(
         title="Final Task",
+        renderer_classes=[
+            OpenAPIRenderer, SwaggerUIRenderer],
         description="API for all things …",
-        version="1.0.0"
-    ), name='openapi-schema'),
+        version="1.0.0",
+    ), name='openapi'),
+    path('docs/', schema_view),
 ]
