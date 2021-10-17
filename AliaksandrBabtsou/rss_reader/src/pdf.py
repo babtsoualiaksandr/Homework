@@ -4,16 +4,10 @@ from contextlib import suppress
 
 from requests.models import HTTPError
 
-from models import Feed, ListFeeds
+from src.models import Feed, ListFeeds
 import pkg_resources
-from utilits import FormatRows, get_rows_from_text, is_url_image
+from src.utilits import FormatRows, get_rows_from_text, is_url_image
 from urllib.request import urlopen
-
-path_tp_logo = 'static/EPAM_logo.png'
-filelogo = pkg_resources.resource_filename(__name__, path_tp_logo)
-
-path_tp_font = 'static/fonts/DejaVuSans-Bold.ttf'
-font_DejaVu = pkg_resources.resource_filename(__name__, path_tp_font)
 
 
 class PDF(FPDF):
@@ -29,12 +23,16 @@ class PDF(FPDF):
         super().__init__()
         self.WIDTH = 210
         self.HEIGHT = 297
+        path_tp_font = 'static/fonts/DejaVuSans-Bold.ttf'
+        font_DejaVu = pkg_resources.resource_filename(__name__, path_tp_font)
         self.add_font('DejaVu', '', font_DejaVu, uni=True)
+        path_tp_logo = 'static/EPAM_logo.png'
+        self.filelogo = pkg_resources.resource_filename(__name__, path_tp_logo)
 
     def header(self):
         """[Header Each page]
         """
-        self.image(filelogo, 10, 8, 33)
+        self.image(self.filelogo, 10, 8, 33)
         self.set_font('DejaVu', size=12)
         self.cell(self.WIDTH - 80)
         self.cell(0, 8, 'Introduction to Python. Final task', border=False, ln=True, align='R', )

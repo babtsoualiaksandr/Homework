@@ -1,8 +1,8 @@
-import log
-from models import Feed, ListFeeds
-from parser_xml import read_rss
-from pdf import PDF
-from print_to_html import print_HTML
+from src import log
+from src.models import Feed, ListFeeds
+from src.parser_xml import read_rss
+from src.pdf import PDF
+from src.print_to_html import print_HTML
 
 
 @log.log_decorator

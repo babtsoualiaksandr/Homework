@@ -1,12 +1,12 @@
-from models import Feed, ListFeeds
+from src.models import Feed, ListFeeds
 from datetime import datetime
 import pkg_resources
 from urllib.parse import urlparse
-from log import log_decorator
+from src.log import log_decorator
 import os
 from pathlib import Path
 
-from utilits import is_url_image
+from src.utilits import is_url_image
 
 logo_rss = pkg_resources.resource_filename(__name__, 'static/rss_512.png')
 logo_EPAM = pkg_resources.resource_filename(__name__, 'static/epam_.png')

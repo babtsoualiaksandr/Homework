@@ -1,7 +1,7 @@
 from typing import List
 import requests
 from requests.models import HTTPError
-import log
+from src import log
 
 
 class FormatRows:

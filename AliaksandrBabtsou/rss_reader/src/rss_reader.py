@@ -3,14 +3,14 @@ import json
 import pkg_resources
 import argparse
 import sys
-import log
+from src import log
 import sys
-from models import Feed, ListFeeds
-from utilits import Colors
-from parser_xml import read_rss
-from local_storage import LocalStorage
-from pdf import PDF
-from print_to_html import print_HTML
+from src.models import Feed, ListFeeds
+from src.utilits import Colors
+from src.parser_xml import read_rss
+from src.local_storage import LocalStorage
+from src.pdf import PDF
+from src.print_to_html import print_HTML
 
 
 @log.log_decorator

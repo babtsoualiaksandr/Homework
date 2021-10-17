@@ -1,12 +1,12 @@
 from xml.dom import minidom
 from html.parser import HTMLParser
-from log import log_decorator
+from src.log import log_decorator
 import json
 import ssl
 from urllib.request import urlopen, Request
 from xml.etree.ElementTree import parse
 
-from models import Feed, Item
+from src.models import Feed, Item
 
 
 ssl._create_default_https_context = ssl._create_unverified_context

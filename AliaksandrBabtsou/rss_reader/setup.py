@@ -14,7 +14,7 @@ setup(
     packages=find_packages('src'),
     include_package_data=True,
     package_data={
-        'src': ['static/*.*'],
+        './src': ['static/*.*'],
     },
     install_requires=['requests', 'python-dateutil', 'fpdf2'],
     setup_requires=['pytest-runner'],

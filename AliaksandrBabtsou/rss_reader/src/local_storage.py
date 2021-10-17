@@ -6,8 +6,8 @@ from dateutil.parser import parse
 import copy
 import pickle
 
-from models import Feed, Item, ListFeeds
-from utilits import ExceptionFormatDate, ExceptionNotFoudNewsDate
+from src.models import Feed, Item, ListFeeds
+from src.utilits import ExceptionFormatDate, ExceptionNotFoudNewsDate
 
 
 class LocalStorage():
