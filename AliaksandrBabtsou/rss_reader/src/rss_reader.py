@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 import dataclasses
 import json
 import pkg_resources
@@ -66,11 +65,6 @@ def format_output(_rss_out: Feed, json_out: bool, colors: Colors) -> None:
         else:
             print_out(_rss_out)
     print(colors.blue)
-
-
-@log.log_decorator
-def get_all_news_from_url(url='https://news.un.org/feed/subscribe/en/news/region/africa/feed/rss.xml', limit: int = 1,):
-    return read_rss(url, limit)
 
 
 @log.log_decorator

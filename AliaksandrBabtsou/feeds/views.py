@@ -1,8 +1,12 @@
+from django.http.request import HttpRequest
 import rest_framework
+from rest_framework import request
+from rest_framework.renderers import StaticHTMLRenderer
+from feeds.service import save_news
 from feeds.serializers import RegisterSerializer
 from feeds.models import RssReader
 from feeds.serializers import RssReaderSerializer
-from django.http.response import JsonResponse
+from django.http.response import HttpResponse, JsonResponse, ResponseHeaders
 from rest_framework import status
 from feeds.permissions import IsOwnerOrReadOnly
 from feeds.models import Feed, Item, Link
@@ -11,9 +15,12 @@ from rest_framework import generics
 from django.contrib.auth.models import User
 from rest_framework import permissions
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework.request import Request
 
 
-from rss_reader import get_all_news_from_url
+from rss_reader import get_news_from_url
 
 
 class FeedViewSet(viewsets.ModelViewSet):
@@ -72,39 +79,31 @@ class RssReaderViewSet(viewsets.ModelViewSet):
     serializer_class = RssReaderSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    @action(detail=False, methods=['Post'])
+    def get_news(self, request: Request, pk=None):
+        news = save_news(url=request.data['url'],
+                         limit=request.data['limit'], format=request.data['format'], user=request.user)
+        serializer = FeedSerializer(
+            news, many=True, context={'request': request})
+        if request.data['format'] == 'pdf':
+            with open("report.pdf", 'rb') as pdf_report:
+                response = HttpResponse(
+                    pdf_report, content_type='application/pdf')
+                filename = "report.pdf"
+                response['Content-Disposition'] = 'attachment; filename="{}"'.format(
+                    filename)
+                return response
+
+        if request.data['format'] == 'html':
+            with open("report.html", 'r') as html_report:
+                response = HttpResponse(
+                    html_report, content_type='application/html')
+                filename = "report.html"
+                response['Content-Disposition'] = 'attachment; filename="{}"'.format(
+                    filename)
+                return response
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-        print(self.request)
-        print(serializer)
-        try:
-            _feed = get_all_news_from_url(
-                url=serializer.data['url'], limit=serializer.data['limit'])
-        except Exception as err:
-            print(err)
-        try:
-            new_feed = generics.get_object_or_404(Feed, url_feed=_feed.url)
-        except Exception as err:
-            print(err)
-            new_feed = Feed(url_feed=_feed.url,
-                            title=_feed.feed_title, owner=self.request.user)
-            new_feed.save()
-
-        for item in _feed.items:
-            try:
-                new_item = generics.get_object_or_404(
-                    Item, link_item=item.link, feed=new_feed)
-            except Exception as err:
-                print(err)
-                new_item = Item(title=item.item_title, date=item.date,
-                                link_item=item.link, description=item.description)
-                new_item.feed = new_feed
-                new_item.save()
-            for link in item.links:
-                try:
-                    new_link = generics.get_object_or_404(
-                        Link, link=link, item=new_item)
-                except Exception as err:
-                    print(err)
-                    new_link = Link(link=link)
-                    new_link.item = new_item
-                    new_link.save()

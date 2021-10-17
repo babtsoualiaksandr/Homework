@@ -100,7 +100,7 @@ def output_to(feed: Feed, f):
 
 
 @log_decorator
-def print_HTML(list_feed, path: str = 'output.HTML'):
+def print_HTML(list_feed, path: str = 'report.html'):
     with open(path, 'w') as f:
         if isinstance(list_feed, ListFeeds):
             for feed in list_feed.feeds:

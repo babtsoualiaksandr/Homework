@@ -40,9 +40,9 @@ class Link(models.Model):
 
 
 CHOICES_FORMAT_OUTPUT = [
-    ('J', 'Json'),
-    ('H', 'HTML'),
-    ('P', 'PDF'),
+    ('json', 'json'),
+    ('html', 'html'),
+    ('pdf', 'pdf'),
 ]
 
 
@@ -54,4 +54,4 @@ class RssReader(models.Model):
     owner = models.ForeignKey(
         'auth.User', related_name='Rssreaders', on_delete=models.CASCADE)
     date_req = models.DateField(auto_now=False, auto_now_add=True)
-    date_from_db = models.DateField(auto_now=False, auto_now_add=False)
+    date_from_db = models.DateField(auto_now=False, auto_now_add=False, blank=True)
