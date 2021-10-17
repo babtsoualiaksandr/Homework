@@ -13,6 +13,12 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 
 class RSSHTMLParser(HTMLParser):
+    """[Parser HTML]
+
+    Args:
+        HTMLParser ([type]): [We use the built-in library]
+    """
+
     def __init__(self):
         self.check = None
         self.description = ''
@@ -20,6 +26,12 @@ class RSSHTMLParser(HTMLParser):
         super().__init__()
 
     def handle_starttag(self, tag, attrs):
+        """[Handling opening tags]
+
+        Args:
+            tag ([type]): [tag]
+            attrs ([type]): [Attributes]
+        """
         if tag == "h1":
             self.check = 'h1'
         if tag == "meta":
@@ -28,6 +40,11 @@ class RSSHTMLParser(HTMLParser):
                 _, self.description = attrs[1]
 
     def handle_data(self, data):
+        """[Collecting page titles just like that]
+
+        Args:
+            data ([type]): [description]
+        """
         if self.check == 'h1':
             self.title = data
         self.check = None
@@ -39,12 +56,20 @@ class RSSHTMLParser(HTMLParser):
 
 @log_decorator
 def read_describe(url: str) -> dict:
+    """[Read description of url ]
+
+    Args:
+        url (str): [link]
+
+    Returns:
+        dict: [link description]
+    """    
     parser = RSSHTMLParser()
     headers = {
         'User-Agent': """Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_7; da-dk)
          AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1"""}
     req = urlopen(url=url)
-    
+
     if req.status != 200:
         return None
     data = req.read()
@@ -56,6 +81,15 @@ def read_describe(url: str) -> dict:
 
 @log_decorator
 def read_rss(url: str, limit: int = None) -> Feed:
+    """[Parser RSS for the specified link ]
+
+    Args:
+        url (str): [url link rss]
+        limit (int, optional): [limit of news if None -> all]. Defaults to None.
+
+    Returns:
+        Feed: [rss news  in formate model Feed]
+    """
     u = urlopen(url)
     doc = parse(u)
     items = []

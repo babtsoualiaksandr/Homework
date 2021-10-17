@@ -14,7 +14,15 @@ from print_to_html import print_HTML
 
 
 @log.log_decorator
-def parse_args(args: list) -> list:
+def parse_args(args: list):
+    """[Parsing the input data]
+
+    Args:
+        args (list): [input data]
+
+    Returns:
+        [argparse ]
+    """
     parser = argparse.ArgumentParser(
         description='Pure Python command-line RSS reader.')
     parser.add_argument('--version', action='store_true', required=False,
@@ -39,11 +47,23 @@ def parse_args(args: list) -> list:
 
 @log.log_decorator
 def get_version() -> str:
+    """[Rotate the package version]
+
+    Returns:
+        str: [version]
+    """
     version = f"Version { pkg_resources.require('rss_reader')[0].version}"
     return version
 
 
 def format_output(_rss_out: Feed, json_out: bool, colors: Colors) -> None:
+    """[Printing output to standard output]
+
+    Args:
+        _rss_out (Feed): [Received data from the parser]
+        json_out (bool): [format output or json or ....]
+        colors (Colors): [Coloring or not]
+    """
     def print_out(feed: Feed) -> None:
         print(f'{colors.red}Feed: {feed.feed_title}')
         for item in feed.items:
@@ -99,7 +119,7 @@ def main():
                 pdf.print_page(feed)
         else:
             pdf.print_page(rss_out)
-        pdf.output('output_.pdf', 'F')
+        pdf.output('report.pdf', 'F')
 
     if conf.to_html:
         print_HTML(rss_out)

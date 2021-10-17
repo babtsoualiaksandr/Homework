@@ -11,7 +11,15 @@ from utilits import ExceptionFormatDate, ExceptionNotFoudNewsDate
 
 
 class LocalStorage():
-    def __init__(self, path: str) -> None:
+    """[Class for storing locally found news from link subscriptions in a binary <Feed> model file]
+    """
+
+    def __init__(self, path: str = 'feed.data') -> None:
+        """[Storage initialization]
+
+        Args:
+            path (str): [name file]
+        """
         self._path = os.path.abspath(path)
         if not os.path.isfile(self._path):
             with open(self._path, 'wb') as f:
@@ -21,6 +29,20 @@ class LocalStorage():
                 pickle.dump(feeds, f)
 
     def read_url(self, url: str, date_filter: str, limit: int = None) -> Feed:
+        """[Read data only specified url]
+
+        Args:
+            url (str): [link]
+            date_filter (str): [for the specified date]
+            limit (int, optional): [no more records if Nonenthen all]. Defaults to None.
+
+        Raises:
+            ExceptionFormatDate: [Invalid data format]
+            ExceptionNotFoudNewsDate: [no data for such date or link]
+
+        Returns:
+            Feed: [Found data from RSS]
+        """
         try:
             datetime.strptime(date_filter, '%Y%m%d')
         except Exception:
@@ -35,7 +57,7 @@ class LocalStorage():
                 return True
             else:
                 return False
-        find_idx, find_in_storage = next(((idx, feed) for idx, feed in enumerate(
+        _, find_in_storage = next(((idx, feed) for idx, feed in enumerate(
             feeds_storage.feeds) if feed.url == url), (None, None))
 
         if find_in_storage is not None:
@@ -45,6 +67,19 @@ class LocalStorage():
             raise ExceptionNotFoudNewsDate(f'Is not news {url}')
 
     def read_all(self, filter_date: str, limit: int = None) -> ListFeeds:
+        """[[Read data all url feeds]]
+
+        Args:
+            filter_date (str): [for the specified date]
+            limit (int, optional): [no more records if Nonenthen all]. Defaults to None.
+
+
+        Raises:
+            ExceptionNotFoudNewsDate: [no data for such link]
+
+        Returns:
+            ListFeeds: [Found list data from RSS]
+        """
         result = ListFeeds(list())
         with open(self._path, 'rb') as f:
             feeds_storage = pickle.load(f)
@@ -58,6 +93,11 @@ class LocalStorage():
         return result
 
     def append(self, rss_data: Feed):
+        """[Adding data from RSS to the repository]
+
+        Args:
+            rss_data (Feed): [Data from RSS]       """
+
         add_feed = copy.deepcopy(rss_data)
         with open(self._path, 'rb') as f:
             feeds_storage = pickle.load(f)

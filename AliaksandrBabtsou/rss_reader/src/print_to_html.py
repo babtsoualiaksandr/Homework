@@ -13,6 +13,12 @@ logo_EPAM = pkg_resources.resource_filename(__name__, 'static/epam_.png')
 
 
 def output_to(feed: Feed, f):
+    """[Creating a page HTML from data parsing data RSS ]
+
+    Args:
+        feed (Feed): [data from RSS]
+        f ([type]): [file where we write]
+    """
 
     head = f'''
         <!doctype html>
@@ -100,7 +106,13 @@ def output_to(feed: Feed, f):
 
 
 @log_decorator
-def print_HTML(list_feed, path: str = 'report.html'):
+def print_HTML(list_feed: ListFeeds, path: str = 'report.html'):
+    """[File creation]
+
+    Args:
+        list_feed (ListFeeds): [data from rss rss]
+        path (str, optional): [name file for output]. Defaults to 'report.html'.
+    """
     with open(path, 'w') as f:
         if isinstance(list_feed, ListFeeds):
             for feed in list_feed.feeds:

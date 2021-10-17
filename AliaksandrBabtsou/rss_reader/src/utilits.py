@@ -5,7 +5,19 @@ import log
 
 
 class FormatRows:
+    """
+    Splits text into lines of specified length
+
+    """
+
     def __init__(self, text: str, size_page: int) -> None:
+        """init FormatRows
+
+        Args:
+            text (str): text
+            size_page (int): length
+        """
+
         self.text = text
         self.size_page = size_page
         self.pages = [text[idx:idx+size_page]
@@ -14,12 +26,22 @@ class FormatRows:
         self.item_count = len(text)
 
     def count_items_on_page(self, page_number: int) -> int:
+        """[Returns len the string at index]
+        """
         try:
             return len(self.pages[page_number])
         except IndexError:
             return f'Exception: Invalid index. Page is missing.'
 
     def find_page(self, search_str: str) -> List[int]:
+        """[Finding the intex of the pages on which the search text is found]
+
+        Args:
+            search_str (str): [search]
+
+        Returns:
+            List[int]: [idexes]
+        """
         idxes_start = [i for i in range(len(self.text)) if self.text.startswith(search_str, i)]
         if not len(idxes_start):
             return f"Exception: '{search_str}' is missing on the pages"
@@ -31,6 +53,14 @@ class FormatRows:
             return list(result)
 
     def display_page(self, page_number: int) -> str:
+        """[Returns the specified string]
+
+        Args:
+            page_number (int): [descidex row]
+
+        Returns:
+            str: [row]
+        """
         return self.pages[page_number]
 
     def __repr__(self) -> str:
@@ -38,12 +68,29 @@ class FormatRows:
 
 
 def get_rows_from_text(text: str, len_row: int) -> list[str]:
+    """[Split the test into lines of the specified length]
+
+    Args:
+        text (str): [Text]
+        len_row (int): [Line length]
+
+    Returns:
+        list[str]: [Array of strings]
+    """
     formatRows = FormatRows(text, len_row)
     return formatRows.pages
 
 
 @log.log_decorator
 def is_url_image(image_url: str) -> bool:
+    """[Checking for the presence of content (pictures) for the specified link]
+
+    Args:
+        image_url (str): [link]
+
+    Returns:
+        bool: [Yes or no]
+    """
     result = False
     try:
         image_formats = ("image/png", "image/jpeg", "image/jpg")
@@ -58,6 +105,8 @@ def is_url_image(image_url: str) -> bool:
 
 
 class Colors:
+    """[Paints stdout]
+    """
 
     def __init__(self, is_color: bool = False):
         if is_color:

@@ -12,6 +12,8 @@ log_stream.setFormatter(formatter)
 
 
 def log_decorator(func):
+    """[function launch logging]
+    """
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         try:
