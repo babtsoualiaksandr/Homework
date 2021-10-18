@@ -1,3 +1,4 @@
+import os
 from fpdf import FPDF
 from datetime import date
 from contextlib import suppress
@@ -7,7 +8,6 @@ from requests.models import HTTPError
 from src.models import Feed, ListFeeds
 import pkg_resources
 from src.utilits import FormatRows, get_rows_from_text, is_url_image
-from urllib.request import urlopen
 
 
 class PDF(FPDF):
@@ -23,12 +23,10 @@ class PDF(FPDF):
         super().__init__()
         self.WIDTH = 210
         self.HEIGHT = 297
-        path_tp_font = 'static/fonts/DejaVuSans-Bold.ttf'
-        font_DejaVu = pkg_resources.resource_filename(__name__, path_tp_font)
-        self.add_font('DejaVu', '', font_DejaVu, uni=True)
-        path_tp_logo = 'static/EPAM_logo.png'
-        self.filelogo = pkg_resources.resource_filename(__name__, path_tp_logo)
-
+        path_to_font = os.path.join(os.path.split(__file__)[0], 'static', 'fonts', 'DejaVuSans-Bold.ttf')
+        self.add_font('DejaVu', '', path_to_font, uni=True)
+        self.filelogo = os.path.join(os.path.split(__file__)[0], 'static', 'EPAM_logo.png')
+ 
     def header(self):
         """[Header Each page]
         """

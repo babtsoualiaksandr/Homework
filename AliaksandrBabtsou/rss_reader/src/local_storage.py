@@ -20,7 +20,8 @@ class LocalStorage():
         Args:
             path (str): [name file]
         """
-        self._path = os.path.abspath(path)
+        self._path = os.path.join(os.path.split(__file__)[0], 'static', path)
+
         if not os.path.isfile(self._path):
             with open(self._path, 'wb') as f:
                 feed = Feed('', '', '')

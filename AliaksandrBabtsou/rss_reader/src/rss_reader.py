@@ -1,3 +1,4 @@
+import os
 import dataclasses
 import json
 import pkg_resources
@@ -120,6 +121,7 @@ def main():
         else:
             pdf.print_page(rss_out)
         pdf.output('report.pdf', 'F')
+        print(os.path.split(__file__), "*"*123)
 
     if conf.to_html:
         print_HTML(rss_out)
