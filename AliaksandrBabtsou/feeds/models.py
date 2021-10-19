@@ -54,4 +54,8 @@ class RssReader(models.Model):
     owner = models.ForeignKey(
         'auth.User', related_name='Rssreaders', on_delete=models.CASCADE)
     date_req = models.DateField(auto_now=False, auto_now_add=True)
-    date_from_db = models.DateField(auto_now=False, auto_now_add=False, blank=True)
+    date_from_db = models.DateField(
+        auto_now=False, auto_now_add=False, blank=True)
+
+    def get(self):
+        return self.url

@@ -17,7 +17,6 @@ def get_news_from_url(url: str = None, limit: int = None, format: str = 'json') 
     Returns:
         Feed: [Data of Feed]
     """
-    print('format', format)
     result = read_rss(url, limit)
     if format == 'pdf':
         pdf = PDF()
@@ -27,7 +26,6 @@ def get_news_from_url(url: str = None, limit: int = None, format: str = 'json') 
         else:
             pdf.print_page(result)
         pdf.output('report.pdf', 'F')
-    print(format, '$'*123)
     if format == 'html':
         print_HTML(result)
     return result

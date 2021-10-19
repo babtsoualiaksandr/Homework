@@ -1,8 +1,10 @@
 import sys
+import os
 from src.local_storage import LocalStorage
 from src.rss_reader import format_output, parse_args
 from src.rss_reader import get_version
 from src.parser_xml import read_describe, read_rss
+from src.service_api import get_news_from_url
 import pytest
 import pkg_resources
 from unittest import mock
@@ -73,15 +75,46 @@ def test_read_rss():
     assert len(result.items) == 1
 
 
-# with open('doc.tree', 'rb') as f:
-#     doc = pickle.load(f)
+def get_doc():
+    is_here = os.path.split(__file__)
+    path_to_file = os.path.join(os.path.abspath(os.path.join(is_here[0], os.pardir)), 'src', 'static', 'UN_News.data')
+    print(is_here, '*'*12)
+
+    with open(path_to_file, 'rb') as f:
+        doc = pickle.load(f)
+    return doc
 
 
-# @mock.patch('src.parser_xml.parse', return_value=doc, autospec=True)
-# def test_parse_xml(mock_parse):
-#     url = 'https://news.yahoo.com/rss/'
-#     assert read_rss(url, 1).feed_title == 'Yahoo News - Latest News & Headlines'
+doc = get_doc()
+
+
+@mock.patch('src.parser_xml.parse', return_value=doc, autospec=True)
+def test_parse_xml(mock_parse):
+    url = 'https://news.yahoo.com/rss/'
+    assert read_rss(url, 1).feed_title == 'UN News'
 
 
 def test_get_rows_from_text():
     assert len(get_rows_from_text('qferferqf refqerqevqerv vqer', 4)) == 7
+
+
+links = ["link1", "link2"]
+news_one = Item(item_title="One", date="1 04 2021", link="https://epam.rss.comm", description="About One", links=links)
+news_two = Item(item_title="Two", date="1 04 2021", link="https://epam.rss.comm", description="About two", links=links)
+items = [news_one, news_two]
+fake_feed = Feed(url='https://epam.rss.comm', feed_title="News fake from EPAM", items=items)
+
+
+@mock.patch('src.service_api.read_rss', return_value=fake_feed, autospec=True)
+def test_service_api(mock_read_rss):
+    result = get_news_from_url(url='https://www.un.org/press/en/feed', limit=100, format='json')
+    assert isinstance(result, Feed)
+    assert result.feed_title == "News fake from EPAM"
+    assert len(result.items) == 2
+    result = get_news_from_url(url='https://www.un.org/press/en/feed', limit=100, format='pdf')
+    assert result.feed_title == "News fake from EPAM"
+    assert os.path.exists('report.pdf')
+    result = get_news_from_url(url='https://www.un.org/press/en/feed', limit=100, format='html')
+    assert len(result.items) == 2
+    assert os.path.exists('report.html')
+
