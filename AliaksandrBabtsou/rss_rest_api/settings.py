@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_crontab',
     'rss_reader',
     'rest_framework',
     'rest_framework_swagger',
@@ -150,7 +151,7 @@ REST_FRAMEWORK = {
 
 
 CRONJOBS = [
-    ('*/1 * * * *', 'feeds.cron.cron_run')
+    ('2,4,6 * * * *', 'feeds.cron.cron_run')
 ]
 
 

@@ -82,7 +82,7 @@ class RssReaderViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['Post'])
     def get_news(self, request: Request, pk=None):
         news = save_news(url=request.data['url'],
-                         limit=request.data['limit'], format=request.data['format'], user=request.user)
+                         limit=int(request.data['limit']), format=request.data['format'], user=request.user)
         serializer = FeedSerializer(
             news, many=True, context={'request': request})
         if request.data['format'] == 'pdf':

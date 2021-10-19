@@ -29,12 +29,6 @@ tests/test_rss_reader.py::test_parse_xml PASSED                                 
 tests/test_rss_reader.py::test_get_rows_from_text PASSED                                                                      [ 88%]
 tests/test_rss_reader.py::test_service_api PASSED                                                                             [100%]
 
-========================================================= warnings summary ==========================================================
-tests/test_rss_reader.py::test_service_api
-  /Users/alexander/Documents/Python_Epam/Homework/venv/lib/python3.9/site-packages/fpdf/fpdf.py:2454: PendingDeprecationWarning: "dest" is unused and will soon be deprecated
-    warnings.warn(
-
--- Docs: https://docs.pytest.org/en/stable/warnings.html
 
 ---------- coverage: platform darwin, python 3.9.6-final-0 -----------
 Name                   Stmts   Miss  Cover
