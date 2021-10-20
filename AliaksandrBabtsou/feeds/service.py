@@ -12,9 +12,10 @@ from dateutil.parser import parse
 
 
 def save_news(url, limit, format, user):
-    print(format, '#'*123)
+
     try:
         _feed = get_news_from_url(url=url, limit=limit, format=format)
+        print(len(_feed.items), 'len =====')
     except Exception as err:
         print(err)
     try:
@@ -45,7 +46,7 @@ def save_news(url, limit, format, user):
                 new_link.item = new_item
             new_link.save()
         news = Feed.objects.filter(url_feed=url)
-        return news
+    return news
 
 
 def equal_date(date_str: str, date_filter: str) -> bool:
@@ -63,7 +64,10 @@ def get_news(req):
     url = req.GET.get('url')
     date = req.GET.get('date')
     if (url and date is None):
-        news = Feed.objects.get(url_feed=url)
+        try:
+            news = Feed.objects.get(url_feed=url)
+        except Exception as err:
+            return HttpResponse({f"Not found {url}"}, status=status.HTTP_404_NOT_FOUND)
         serializer = FeedSerializer(
             news, many=False, context={'request': req})
         response = Response(
@@ -76,9 +80,11 @@ def get_news(req):
         response.renderer_context = {}
         return response
     elif (url is None and date):
-        news = Item.objects.all()
+        news = Item.objects.all()        
         news_date = [item for item in Item.objects.all(
         ) if equal_date(item.date, date)]
+        if news_date is None:
+            return HttpResponse({f"Not found {date}"}, status=status.HTTP_404_NOT_FOUND)
         serializer = ItemSerializer(
             news_date, many=True, context={'request': req})
         response = Response(
@@ -94,6 +100,8 @@ def get_news(req):
         news = Item.objects.all()
         news_date = [item for item in Item.objects.all(
         ) if equal_date(item.date, date)]
+        if news_date is None:
+            return HttpResponse({f"Not found {date}"}, status=status.HTTP_404_NOT_FOUND)
         serializer = ItemSerializer(
             news_date, many=True, context={'request': req})
         response = Response(
