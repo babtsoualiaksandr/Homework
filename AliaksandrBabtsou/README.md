@@ -1,3 +1,5 @@
+### Console
+```shell
 usage: rss_reader.py [-h] [--version] [--json] [--verbose] [--to-pdf] [--to-html] [--colorize] [--date][--limit LIMIT]
                      source
 
@@ -16,8 +18,9 @@ optional arguments:
   --to-html      HTML format  generated
   --colorize     Print the result of the utility in colorized mode
   --limit LIMIT  Limit news topics if this parameter provided
-
-'''
+```
+### Pytest
+```shell
 pytest -vv --cov=src
 ======================================================== test session starts =====================================
 platform darwin -- Python 3.9.6, pytest-6.2.5, py-1.10.0, pluggy-1.0.0 -- 
@@ -52,10 +55,11 @@ src/service_api.py        18      2    89%
 src/utilits.py            81     31    62%
 ------------------------------------------
 TOTAL                    439    123    72%
-'''
+```
 
 
-
+### Docker and Postgresql
+```shell
 docker-compose run .
 python manage.py migrate&& python manage.py createsuperuser&&python manage.py crontab add
 
@@ -69,4 +73,6 @@ Example:
 http://localhost:8000/get_news?url=https://news.un.org/feed/subscribe/en/news/topic/health/feed/rss.xml&date=20211020
 UpDate news in DB
 http://localhost:8000/update_news
-in Crone too
+Crone too
+
+```
