@@ -1,6 +1,5 @@
 docker-compose run .
-python manager.py migrate
-python manage.py createsuperuser
+python manage.py migrate&& python manage.py createsuperuser&&python manage.py crontab add
 
 http://localhost:8000
 
