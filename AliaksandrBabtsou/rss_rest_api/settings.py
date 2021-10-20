@@ -151,7 +151,7 @@ REST_FRAMEWORK = {
 
 
 CRONJOBS = [
-    ('2,4,6 * * * *', 'feeds.cron.cron_run')
+    ('10,20,40 * * * *', 'feeds.cron.cron_run')
 ]
 
 

@@ -16,7 +16,6 @@ class ItemSerializer(serializers.HyperlinkedModelSerializer):
     links = LinkSerializer(many=True, read_only=True)
 
     def create(self, validated_data):
-        print(validated_data)
         super(self, validated_data)
 
     def create(self, validated_data):

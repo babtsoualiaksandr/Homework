@@ -11,9 +11,6 @@ class Feed(models.Model):
     def __str__(self):
         return f'{self.title} {self.url_feed} {self.owner}'
 
-    def __repr__(self):
-        return f'{self.title} {self.url_feed} {self.owner}'
-
     class Meta:
         ordering = ['url_feed']
 
